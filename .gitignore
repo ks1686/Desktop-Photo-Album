@@ -5,3 +5,9 @@ bin/
 cs213_photos.iml
 out/
 data/data.dat
+*.class
+target/
+build/
+.gradle/
+.DS_Store
+docs/
