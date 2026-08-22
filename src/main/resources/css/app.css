@@ -1,0 +1,183 @@
+/* Desktop Photo Album — app-wide theme. Modern light theme with an indigo accent. */
+
+.root {
+    -fx-font-family: "System";
+    -fx-base: #f6f7fb;
+    -fx-background: #f6f7fb;
+    -fx-accent: #4f46e5;
+    -fx-focus-color: #4f46e5;
+    -fx-faint-focus-color: transparent;
+}
+
+/* ---------- Headings ---------- */
+
+.title-label {
+    -fx-font-size: 34px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e1b4b;
+}
+
+.subtitle-label {
+    -fx-font-size: 15px;
+    -fx-text-fill: #6b7280;
+}
+
+/* ---------- Cards / surfaces ---------- */
+
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(30, 27, 75, 0.10), 18, 0.1, 0, 4);
+}
+
+/* ---------- Buttons ---------- */
+
+.button {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1f2937;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #d1d5db;
+    -fx-border-width: 1;
+    -fx-padding: 7 14 7 14;
+    -fx-cursor: hand;
+    -fx-font-size: 13px;
+}
+.button:hover {
+    -fx-background-color: #f3f4f6;
+    -fx-border-color: #9ca3af;
+}
+.button:pressed {
+    -fx-background-color: #e5e7eb;
+}
+
+.button.primary {
+    -fx-background-color: #4f46e5;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+}
+.button.primary:hover {
+    -fx-background-color: #4338ca;
+}
+.button.primary:pressed {
+    -fx-background-color: #3730a3;
+}
+
+.button.danger {
+    -fx-text-fill: #b91c1c;
+    -fx-border-color: #fca5a5;
+}
+.button.danger:hover {
+    -fx-background-color: #fef2f2;
+    -fx-border-color: #f87171;
+}
+
+.button.link {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #4f46e5;
+}
+.button.link:hover {
+    -fx-text-fill: #3730a3;
+}
+
+/* ---------- Inputs ---------- */
+
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #111827;
+    -fx-prompt-text-fill: #9ca3af;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #d1d5db;
+    -fx-border-width: 1;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 13px;
+}
+.text-field:focused {
+    -fx-border-color: #4f46e5;
+    -fx-effect: dropshadow(gaussian, rgba(79, 70, 229, 0.25), 6, 0.2, 0, 0);
+}
+
+/* ---------- Lists ---------- */
+
+.list-view {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+    -fx-padding: 4;
+}
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 8 10 8 10;
+    -fx-font-size: 13px;
+    -fx-text-fill: #1f2937;
+}
+.list-cell:filled:hover {
+    -fx-background-color: #eef2ff;
+}
+.list-cell:filled:selected {
+    -fx-background-color: #e0e7ff;
+    -fx-text-fill: #312e81;
+    -fx-font-weight: bold;
+}
+
+/* ---------- Scroll pane ---------- */
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ---------- Photo tiles ---------- */
+
+.photo-tile {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-padding: 8;
+    -fx-border-radius: 10;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(30, 27, 75, 0.08), 10, 0.1, 0, 3);
+}
+.photo-tile:hover {
+    -fx-border-color: #a5b4fc;
+    -fx-effect: dropshadow(gaussian, rgba(79, 70, 229, 0.22), 14, 0.1, 0, 5);
+}
+.photo-tile:selected {
+    -fx-border-color: #4f46e5;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(79, 70, 229, 0.35), 16, 0.1, 0, 5);
+}
+
+.photo-caption {
+    -fx-font-size: 11px;
+    -fx-fill: #4b5563;
+    -fx-text-alignment: center;
+}
+
+/* ---------- Toolbar ---------- */
+
+.toolbar {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-effect: dropshadow(gaussian, rgba(30, 27, 75, 0.06), 8, 0.1, 0, 2);
+}
+
+/* ---------- Slideshow ---------- */
+
+.slideshow-root {
+    -fx-background-color: #0f172a;
+}
+.slideshow-title {
+    -fx-font-size: 13px;
+    -fx-text-fill: #cbd5e1;
+}

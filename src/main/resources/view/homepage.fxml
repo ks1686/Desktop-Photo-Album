@@ -1,28 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.HomepageController">
-   <fx:include fx:id="albumList" source="albumlist.fxml" />
-   <Button fx:id="deleteAlbumButton" layoutX="334.0" layoutY="411.0" mnemonicParsing="false" onAction="#deleteAlbum" text="Delete Selected Album" />
-   <Button fx:id="logoutButton" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#logout" text="Logout" />
-   <Button fx:id="renameAlbumButton" layoutX="520.0" layoutY="411.0" mnemonicParsing="false" onAction="#renameAlbum" prefHeight="24.0" prefWidth="125.0" text="Rename Album" />
-   <Button fx:id="createAlbumButton" layoutX="211.0" layoutY="411.0" mnemonicParsing="false" onAction="#createAlbum" text="Create Album" />
-   <Button fx:id="openAlbumButton" layoutX="100.0" layoutY="411.0" mnemonicParsing="false" onAction="#openAlbum" text="Open Album" />
-   <Button fx:id="quitButton" layoutX="93.0" layoutY="14.0" mnemonicParsing="false" onAction="#quit" text="Quit" />
-   <TextField fx:id="searchBarTextField" layoutX="99.0" layoutY="166.0" onAction="#searchPhotos" prefHeight="24.0" prefWidth="602.0" promptText="Search All Photos (hover for tooltip)">
-      <tooltip>
-         <Tooltip text="Enter a date or a tag to search by. Date format: MM/DD/YYYY-MM/DD/YYYY. Tag format: tagname=tagvalue. Examples: &quot;04/05/2024-04/07/2024&quot;, &quot;t1=v1&quot;, &quot;t1=v1 OR t2=v3&quot;, &quot;t1=v1 AND t2=v3&quot;. " />
-      </tooltip>
-   </TextField>
-   <Text layoutX="266.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Albums">
-      <font>
-         <Font size="72.0" />
-      </font>
-   </Text>
-</Pane>
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="controller.HomepageController"
+           prefHeight="700.0" prefWidth="1000.0">
+   <VBox spacing="16">
+      <padding><Insets top="20.0" right="24.0" bottom="20.0" left="24.0"/></padding>
+
+      <!-- Top bar -->
+      <HBox alignment="CENTER_LEFT" spacing="10">
+         <Button fx:id="logoutButton" onAction="#logout" text="Log Out"/>
+         <Region HBox.hgrow="ALWAYS"/>
+         <Button fx:id="quitButton" onAction="#quit" text="Quit"/>
+      </HBox>
+
+      <!-- Header -->
+      <VBox spacing="2">
+         <Label text="Your Albums" styleClass="title-label"/>
+         <Label text="Create, rename, open, or delete an album — or search across all of them."
+                styleClass="subtitle-label"/>
+      </VBox>
+
+      <!-- Search -->
+      <HBox spacing="10" alignment="CENTER_LEFT">
+         <TextField fx:id="searchBarTextField" onAction="#searchPhotos" HBox.hgrow="ALWAYS"
+                    promptText='Search by date (MM/DD/YYYY-MM/DD/YYYY) or tag (tag=value)...'>
+            <tooltip>
+               <Tooltip text="Date format: MM/DD/YYYY-MM/DD/YYYY. Tag format: tagname=tagvalue. Examples: &quot;04/05/2024-04/07/2024&quot;, &quot;t1=v1&quot;, &quot;t1=v1 OR t2=v3&quot;, &quot;t1=v1 AND t2=v3&quot;." />
+            </tooltip>
+         </TextField>
+         <Button fx:id="searchButton" onAction="#searchPhotos" text="Search" styleClass="primary"/>
+      </HBox>
+
+      <!-- Album list card -->
+      <StackPane VBox.vgrow="ALWAYS">
+         <fx:include fx:id="albumList" source="albumlist.fxml"/>
+      </StackPane>
+
+      <!-- Album actions -->
+      <HBox spacing="10" alignment="CENTER">
+         <Button fx:id="openAlbumButton" onAction="#openAlbum" text="Open Album" styleClass="primary" prefWidth="130"/>
+         <Button fx:id="createAlbumButton" onAction="#createAlbum" text="Create Album" prefWidth="130"/>
+         <Button fx:id="renameAlbumButton" onAction="#renameAlbum" text="Rename Album" prefWidth="130"/>
+         <Button fx:id="deleteAlbumButton" onAction="#deleteAlbum" text="Delete Album" styleClass="danger" prefWidth="130"/>
+      </HBox>
+   </VBox>
+</StackPane>

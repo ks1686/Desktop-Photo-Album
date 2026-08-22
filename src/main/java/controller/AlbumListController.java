@@ -1,11 +1,11 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.time.format.FormatStyle;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import model.Album;
 import model.Alerts;
@@ -13,11 +13,13 @@ import model.Photos;
 import model.User;
 
 /**
- * Album list used on the homepage and the choose-album screen.
+ * Album list used on the homepage and the choose-album screen. The ListView is
+ * typed to {@link Album} directly so selection never depends on display text.
  */
 public class AlbumListController {
-    @FXML ListView<String> albumListView;
-    private ObservableList<String> obsList;
+    @FXML private ListView<Album> albumListView;
+    @FXML private Label emptyLabel;
+
     private User user;
     private Photos app;
 
@@ -25,42 +27,53 @@ public class AlbumListController {
         this.user = user;
         this.app = app;
         refresh();
-        if (!obsList.isEmpty()) {
+        if (!albumListView.getItems().isEmpty()) {
             albumListView.getSelectionModel().select(0);
         }
     }
 
     public void refresh() {
-        List<String> albumNames = new ArrayList<>();
-        for (Album album : user.getAlbums()) {
-            albumNames.add(formatAlbumRow(album));
-        }
-        obsList = FXCollections.observableArrayList(albumNames);
-        albumListView.setItems(obsList);
+        ObservableList<Album> items = FXCollections.observableArrayList(user.getAlbums());
+        albumListView.setItems(items);
+        albumListView.setCellFactory(view -> new javafx.scene.control.ListCell<>() {
+            @Override
+            protected void updateItem(Album album, boolean empty) {
+                super.updateItem(album, empty);
+                setText(empty || album == null ? null : formatAlbumRow(album));
+            }
+        });
+        boolean empty = items.isEmpty();
+        emptyLabel.setVisible(empty);
+        emptyLabel.setManaged(empty);
+        albumListView.setVisible(!empty);
+        albumListView.setManaged(!empty);
     }
 
-    private static String formatDate(Calendar date) {
+    private static String formatDate(java.util.Calendar date) {
         if (date == null) {
             return "N/A";
         }
-        return (date.get(Calendar.MONTH) + 1) + "/" + date.get(Calendar.DAY_OF_MONTH) + "/" + date.get(Calendar.YEAR);
+        return date.toInstant().atZone(date.getTimeZone().toZoneId()).toLocalDate()
+                .format(java.time.format.DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM));
     }
 
     private static String formatAlbumRow(Album album) {
-        return album.getAlbumName() + " (" + album.getPhotos().size() + " photos, "
-                + formatDate(album.getStartDate()) + " - " + formatDate(album.getEndDate()) + ")";
+        return album.getAlbumName() + "  ·  " + album.getPhotos().size()
+                + (album.getPhotos().size() == 1 ? " photo" : " photos")
+                + "  ·  " + formatDate(album.getStartDate()) + " – " + formatDate(album.getEndDate());
     }
 
-    public String getSelectedAlbum() {
+    /** @return the selected {@link Album}, or {@code null} when nothing is selected */
+    public Album getSelectedAlbum() {
         return albumListView.getSelectionModel().getSelectedItem();
     }
 
+    /**
+     * @return the selected album's name, or {@code null} when nothing is selected
+     */
     public String getSelectedAlbumName() {
-        String selected = getSelectedAlbum();
-        if (selected == null) {
-            return null;
-        }
-        return fixAlbumName(selected);
+        Album selected = getSelectedAlbum();
+        return selected == null ? null : selected.getAlbumName();
     }
 
     public void deleteAlbum(String albumName) {
@@ -71,7 +84,7 @@ public class AlbumListController {
         }
         user.getAlbums().remove(album);
         refresh();
-        Alerts.info("Album Deleted", "", "Album " + albumName + " has been deleted.");
+        Alerts.info("Album Deleted", "", "Album \"" + albumName + "\" has been deleted.");
     }
 
     public void renameAlbum(String albumName, String newAlbumName) {
@@ -97,11 +110,7 @@ public class AlbumListController {
         refresh();
     }
 
-    public String fixAlbumName(String albumName) {
-        int index = albumName.indexOf("(");
-        if (index != -1) {
-            return albumName.substring(0, index - 1);
-        }
-        return albumName;
+    public ListView<Album> getAlbumListView() {
+        return albumListView;
     }
 }

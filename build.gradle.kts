@@ -32,3 +32,18 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+/**
+ * Builds a self-contained runnable jar: `java -jar` works on any JDK 21+
+ * install with no JavaFX setup. The manifest points at a plain launcher
+ * class because JavaFX rejects Application subclasses launched from a jar.
+ */
+tasks.jar {
+    archiveFileName.set("DesktopPhotoAlbum.jar")
+    manifest {
+        attributes("Main-Class" to "launcher.Launcher")
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    exclude("module-info.class", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
+}

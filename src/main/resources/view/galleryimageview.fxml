@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.TilePane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controller.GalleryImageViewController">
-   <TilePane fx:id="galleryImageView" hgap="40.0" prefColumns="3" vgap="70"/>
-</AnchorPane>
+<TilePane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+          fx:id="galleryImageView"
+          fx:controller="controller.GalleryImageViewController"
+          hgap="18.0" vgap="18.0" alignment="TOP_CENTER">
+   <padding><Insets top="16.0" right="16.0" bottom="16.0" left="16.0"/></padding>
+</TilePane>

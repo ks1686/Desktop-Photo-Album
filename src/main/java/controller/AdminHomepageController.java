@@ -14,7 +14,6 @@ import model.User;
  * Admin homepage: create and delete users, then logout on the same stage.
  */
 public class AdminHomepageController {
-    public AnchorPane adminUserList;
     @FXML protected AdminUserListController adminUserListController;
 
     @FXML Button createUserButton;

@@ -1,27 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GalleryController">
-   <ScrollPane layoutX="100.0" layoutY="173.0" prefHeight="300.0" prefWidth="600.0">
-      <fx:include fx:id="galleryView" source="galleryimageview.fxml" />
-   </ScrollPane>
-   <Button fx:id="addPhotoButton" layoutX="128.0" layoutY="137.0" mnemonicParsing="false" onAction="#addPhoto" text="Add Photo" />
-   <Button fx:id="removePhotoButton" layoutX="266.0" layoutY="137.0" mnemonicParsing="false" onAction="#removePhoto" text="Remove Photo" />
-   <Button fx:id="setCaptionButton" layoutX="450.0" layoutY="137.0" mnemonicParsing="false" onAction="#setCaption" text="Set Caption" />
-   <Button fx:id="displaySeparatelyButton" layoutX="582.0" layoutY="485.0" mnemonicParsing="false" onAction="#displaySeparately" text="Display Separately" />
-   <Button fx:id="editTagsButton" layoutX="607.0" layoutY="137.0" mnemonicParsing="false" onAction="#editTags" text="Edit Tags" />
-   <Button fx:id="copyToAlbumButton" layoutX="264.0" layoutY="485.0" mnemonicParsing="false" onAction="#copyToAlbum" text="Copy To Album" />
-   <Button fx:id="moveToAlbumButton" layoutX="100.0" layoutY="485.0" mnemonicParsing="false" onAction="#moveToAlbum" text="Move To Album" />
-   <Text layoutX="281.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Photos">
-      <font>
-         <Font size="69.0" />
-      </font>
-   </Text>
-   <Button fx:id="backToAlbums" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToHomepage" text="Back to Albums" />
-   <Button fx:id="slideshowButton" layoutX="439.0" layoutY="485.0" mnemonicParsing="false" onAction="#openSlideshow" text="Slideshow View" />
-</AnchorPane>
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.GalleryController" prefHeight="700.0" prefWidth="1000.0">
+   <padding><Insets top="20.0" right="24.0" bottom="20.0" left="24.0"/></padding>
+
+   <!-- Top bar -->
+   <HBox alignment="CENTER_LEFT" spacing="10">
+      <Button fx:id="backToAlbums" onAction="#backToHomepage" text="← Albums"/>
+      <Region HBox.hgrow="ALWAYS"/>
+   </HBox>
+
+   <!-- Header -->
+   <VBox spacing="2">
+      <Label fx:id="galleryTitle" text="Photos" styleClass="title-label"/>
+      <Label fx:id="gallerySubtitle" text="" styleClass="subtitle-label"/>
+   </VBox>
+
+   <!-- Photo toolbar -->
+   <HBox alignment="CENTER_LEFT" spacing="10">
+      <VBox.margin><Insets top="10.0" bottom="10.0"/></VBox.margin>
+      <Button fx:id="addPhotoButton" onAction="#addPhoto" text="Add Photo" styleClass="primary"/>
+      <Button fx:id="removePhotoButton" onAction="#removePhoto" text="Remove Photo" styleClass="danger"/>
+      <Button fx:id="setCaptionButton" onAction="#setCaption" text="Set Caption"/>
+      <Button fx:id="editTagsButton" onAction="#editTags" text="Edit Tags"/>
+      <Region HBox.hgrow="ALWAYS"/>
+      <Button fx:id="slideshowButton" onAction="#openSlideshow" text="▶ Slideshow"/>
+   </HBox>
+
+   <!-- Gallery -->
+   <StackPane VBox.vgrow="ALWAYS" styleClass="card">
+      <ScrollPane fx:id="galleryScroll" fitToWidth="true">
+         <fx:include fx:id="galleryView" source="galleryimageview.fxml"/>
+      </ScrollPane>
+      <Label fx:id="emptyGalleryLabel" text="This album is empty — add a photo to get started."
+             styleClass="subtitle-label" visible="false" managed="false"/>
+   </StackPane>
+
+   <!-- Bottom actions -->
+   <HBox spacing="10" alignment="CENTER">
+      <VBox.margin><Insets top="12.0"/></VBox.margin>
+      <Button fx:id="moveToAlbumButton" onAction="#moveToAlbum" text="Move to Album…" prefWidth="150"/>
+      <Button fx:id="copyToAlbumButton" onAction="#copyToAlbum" text="Copy to Album…" prefWidth="150"/>
+      <Button fx:id="displaySeparatelyButton" onAction="#displaySeparately" text="View Full Size" prefWidth="150"/>
+   </HBox>
+</VBox>

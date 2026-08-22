@@ -1,42 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EditTagsController">
-   <fx:include fx:id="tagsList" source="tagslist.fxml" />
-   <fx:include fx:id="tagTypeList" source="tagtypelist.fxml" />
-   <Text layoutX="83.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Photo Tags">
-      <font>
-         <Font size="40.0" />
-      </font>
-   </Text>
-   <Button fx:id="createTagTypeButton" layoutX="437.0" layoutY="467.0" mnemonicParsing="false" onAction="#createTagType" text="Create New Tag Type">
-      <font>
-         <Font size="21.0" />
-      </font>
-   </Button>
-   <Button fx:id="deleteSelectedTagButton" layoutX="66.0" layoutY="435.0" mnemonicParsing="false" onAction="#deleteSelectedTag" prefHeight="40.0" prefWidth="255.0" text="Delete Selected Tag From Photo">
-      <font>
-         <Font size="14.0" />
-      </font>
-   </Button>
-   <Button fx:id="addTagButton" layoutX="452.0" layoutY="415.0" mnemonicParsing="false" onAction="#addTag" text="Add Tag To Photo">
-      <font>
-         <Font size="22.0" />
-      </font>
-   </Button>
-   <Button fx:id="deleteTagTypeButton" layoutX="451.0" layoutY="515.0" mnemonicParsing="false" onAction="#deleteTagType" text="Delete Tag Type">
-      <font>
-         <Font size="23.0" />
-      </font>
-   </Button>
-   <Text layoutX="467.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tag Types">
-      <font>
-         <Font size="38.0" />
-      </font>
-   </Text>
-   <Button fx:id="backToPhotos" layoutX="24.0" layoutY="24.0" mnemonicParsing="false" onAction="#backToGallery" text="Back to Photos" />
-</Pane>
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="controller.EditTagsController"
+           prefHeight="700.0" prefWidth="1000.0">
+   <VBox spacing="16">
+      <padding><Insets top="20.0" right="24.0" bottom="20.0" left="24.0"/></padding>
+
+      <HBox alignment="CENTER_LEFT" spacing="10">
+         <Button fx:id="backToPhotos" onAction="#backToGallery" text="← Photos"/>
+         <Region HBox.hgrow="ALWAYS"/>
+      </HBox>
+
+      <VBox spacing="2">
+         <Label fx:id="editTagsTitle" text="Photo Tags" styleClass="title-label"/>
+         <Label text="Pick a tag type on the right, then add a value — or manage existing tags on the left."
+                styleClass="subtitle-label"/>
+      </VBox>
+
+      <HBox spacing="16" alignment="TOP_CENTER" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+         <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <Label text="Tags on this photo" styleClass="subtitle-label"/>
+            <StackPane VBox.vgrow="ALWAYS">
+               <fx:include fx:id="tagsList" source="tagslist.fxml"/>
+            </StackPane>
+            <HBox spacing="10" alignment="CENTER">
+               <Button fx:id="addTagButton" onAction="#addTag" text="Add Tag" styleClass="primary" prefWidth="120"/>
+               <Button fx:id="deleteSelectedTagButton" onAction="#deleteSelectedTag" text="Delete Selected Tag"
+                       styleClass="danger" prefWidth="160"/>
+            </HBox>
+         </VBox>
+
+         <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <Label text="Tag Types" styleClass="subtitle-label"/>
+            <StackPane VBox.vgrow="ALWAYS">
+               <fx:include fx:id="tagTypeList" source="tagtypelist.fxml"/>
+            </StackPane>
+            <HBox spacing="10" alignment="CENTER">
+               <Button fx:id="createTagTypeButton" onAction="#createTagType" text="New Tag Type" prefWidth="120"/>
+               <Button fx:id="deleteTagTypeButton" onAction="#deleteTagType" text="Delete Tag Type"
+                       styleClass="danger" prefWidth="120"/>
+            </HBox>
+         </VBox>
+      </HBox>
+   </VBox>
+</StackPane>

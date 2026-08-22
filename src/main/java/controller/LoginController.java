@@ -2,7 +2,6 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Alerts;
 import model.Photos;
@@ -14,7 +13,6 @@ import util.SceneNavigator;
  */
 public class LoginController {
 
-    public Text loginText;
     @FXML
     private TextField usernameTextField;
 

@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.Album;
@@ -21,12 +23,15 @@ import util.SceneNavigator;
  * Gallery of photos in one album.
  */
 public class GalleryController {
-    public AnchorPane galleryView;
     public Button removePhotoButton;
     public Button setCaptionButton;
     public Button displaySeparatelyButton;
     public Button editTagsButton;
     public Button backToAlbums;
+
+    @FXML private Label galleryTitle;
+    @FXML private Label gallerySubtitle;
+    @FXML private Label emptyGalleryLabel;
     @FXML protected GalleryImageViewController galleryViewController;
 
     private Photos app;
@@ -45,10 +50,30 @@ public class GalleryController {
     }
 
     public void start(Photos app, Album album, User user) {
-        galleryViewController.start(album);
         this.app = app;
         this.album = album;
         this.user = user;
+        galleryTitle.setText(album.getAlbumName());
+        refreshGallery();
+    }
+
+    private void refreshGallery() {
+        galleryViewController.start(album);
+        int count = album.getPhotos().size();
+        gallerySubtitle.setText(count + (count == 1 ? " photo" : " photos"));
+        boolean empty = count == 0;
+        emptyGalleryLabel.setVisible(empty);
+        emptyGalleryLabel.setManaged(empty);
+        setPhotoActionsDisabled(empty);
+    }
+
+    private void setPhotoActionsDisabled(boolean empty) {
+        removePhotoButton.setDisable(empty);
+        setCaptionButton.setDisable(empty);
+        displaySeparatelyButton.setDisable(empty);
+        editTagsButton.setDisable(empty);
+        copyToAlbumButton.setDisable(empty);
+        moveToAlbumButton.setDisable(empty);
     }
 
     private Photo requireSelectedPhoto(String action) {
@@ -61,7 +86,7 @@ public class GalleryController {
 
     public void addPhoto() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
+        fileChooser.setTitle("Add Photo");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Images", "*.bmp", "*.gif", "*.jpeg", "*.jpg", "*.png",
                         "*.BMP", "*.GIF", "*.JPEG", "*.JPG", "*.PNG"));
@@ -72,7 +97,9 @@ public class GalleryController {
         try {
             Photo photo = Photo.importFile(file, user);
             album.addPhoto(photo);
-            galleryViewController.addToGallery(photo);
+            refreshGallery();
+            // select the newly added photo so follow-up actions just work
+            galleryViewController.getSelectedPhoto();
         } catch (IllegalArgumentException | IOException e) {
             Alerts.error("Invalid image", "Could not import photo", e.getMessage());
         }
@@ -85,7 +112,7 @@ public class GalleryController {
             return;
         }
         album.removePhoto(selectedPhoto);
-        galleryViewController.start(album);
+        refreshGallery();
     }
 
     @FXML
@@ -105,7 +132,7 @@ public class GalleryController {
             return;
         }
         selectedPhoto.setCaption(caption);
-        galleryViewController.start(album);
+        refreshGallery();
     }
 
     @FXML
@@ -115,13 +142,19 @@ public class GalleryController {
             return;
         }
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/view/separatephotodisplay.fxml"));
-            javafx.scene.layout.Pane root = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/separatephotodisplay.fxml"));
+            VBox root = loader.load();
             SeparatePhotoDisplayController controller = loader.getController();
             Stage stage = new Stage();
+            stage.setTitle(selectedPhoto.getCaption() == null || selectedPhoto.getCaption().isBlank()
+                    ? "Photo" : selectedPhoto.getCaption());
+            Scene scene = new Scene(root, 800, 600);
+            var css = getClass().getResource("/css/app.css");
+            if (css != null) {
+                scene.getStylesheets().add(css.toExternalForm());
+            }
             controller.start(selectedPhoto);
-            stage.setScene(new Scene(root, 800, 600));
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             Alerts.error("Display Separately", "Failed to load separate photo display screen",
@@ -188,13 +221,18 @@ public class GalleryController {
             return;
         }
         try {
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
-                    getClass().getResource("/view/slideshowview.fxml"));
-            javafx.scene.layout.Pane root = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/slideshowview.fxml"));
+            VBox root = loader.load();
             SlideshowViewController slideshowViewController = loader.getController();
             Stage stage = new Stage();
+            stage.setTitle("Slideshow — " + album.getAlbumName());
+            Scene scene = new Scene(root, 900, 680);
+            var css = getClass().getResource("/css/app.css");
+            if (css != null) {
+                scene.getStylesheets().add(css.toExternalForm());
+            }
             slideshowViewController.start(selectedPhoto, this.album);
-            stage.setScene(new Scene(root, 800, 600));
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             Alerts.error("Open Slideshow", "Failed to load slideshow screen",

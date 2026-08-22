@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SlideshowViewController">
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.SlideshowViewController" styleClass="slideshow-root"
+      alignment="CENTER" spacing="14">
+   <padding><Insets top="16.0" right="16.0" bottom="16.0" left="16.0"/></padding>
 
-    <HBox alignment="CENTER">
-        <!-- Previous Button -->
-        <Button fx:id="previousButton" onAction="#previousPhoto" text="Previous" />
-      <ImageView fx:id="slideshowImageView" fitHeight="400.0" fitWidth="400.0" pickOnBounds="true" preserveRatio="true" />
+   <ImageView fx:id="slideshowImageView" fitHeight="520.0" fitWidth="860.0"
+              pickOnBounds="true" preserveRatio="true"/>
 
-        <!-- Next Button -->
-        <Button fx:id="nextButton" onAction="#nextPhoto" text="Next" />
-    </HBox>
+   <Label fx:id="photoInfoLabel" styleClass="slideshow-title" text=""/>
+
+   <HBox alignment="CENTER" spacing="16">
+      <Button fx:id="autoplayButton" onAction="#toggleAutoplay" text="▶ Play"/>
+      <Button fx:id="previousButton" onAction="#previousPhoto" text="← Previous"/>
+      <Button fx:id="nextButton" onAction="#nextPhoto" text="Next →" styleClass="primary"/>
+   </HBox>
+
+   <Label fx:id="hintLabel" text="Use ← / → keys to navigate, space to play/pause, esc to close."
+          styleClass="slideshow-title"/>
 </VBox>
